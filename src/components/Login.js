@@ -48,7 +48,7 @@ const Login = () => {
   return (
     <div>
       <h1 className="py-20">Login</h1>
-      <form>
+      <form title="form">
         <label htmlFor="username">Username:</label>
         <input
           type="text"

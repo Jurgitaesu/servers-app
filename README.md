@@ -25,6 +25,11 @@ REACT_APP_USERNAME=username_string
 
 REACT_APP_PASSWORD=password_string
 ```
+## Testing the application
+
+```
+npm test
+```
 
 ## Starting server
 

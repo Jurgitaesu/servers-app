@@ -5,6 +5,7 @@
   background-color: #000000;
   color: #ffffff;
   font-weight: 400;
+  font-size: 16px;
   line-height: 1.5;
   font-family: 'Roboto', sans-serif;
 }
@@ -15,13 +16,16 @@
   margin: auto;
 }
 
+h1 {
+  font-size: 40px;
+}
+
 form {
   max-width: 400px;
 }
 
 label {
   display: block;
-  line-height: 24px;
   font-weight: 500;
   margin-left: 24px;
   margin-bottom: 4px;
@@ -40,8 +44,11 @@ input {
   border-radius: 50px;
   outline: 0;
   font-weight: 500;
-  font-size: 14px;
-  line-height: 24px;
+}
+
+.text-small {
+  color: #9b9b9b;
+  margin-top: 12px;
 }
 
 .login-button {
@@ -50,19 +57,9 @@ input {
   border-radius: 30px;
   font-weight: 700;
   padding: 13px 23px;
-  line-height: 18px;
-  font-size: 14px;
   text-align: center;
-  white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
-}
-
-.text-small {
-  color: #9b9b9b;
-  margin-top: 12px;
-  font-size: 14px;
-  line-height: 20px;
 }
 
 .d-flex {
@@ -95,4 +92,14 @@ input {
 
 .cursor {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
 }

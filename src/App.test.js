@@ -17,8 +17,8 @@ const render = (component) => rtlRender(<Provider store={store}>{component}</Pro
 describe('login describe statement', () => {
   test('login form should be in the document', () => {
     const component = render(<Login />);
-    const labelNode = component.getByText('Username:');
-    expect(labelNode).toBeInTheDocument();
+    const formNode = component.getByTitle('form');
+    expect(formNode).toBeInTheDocument();
   });
   test('username field should have label', () => {
     const component = render(<Login />);
@@ -44,11 +44,71 @@ describe('login describe statement', () => {
     fireEvent.change(passwordInputNode, { target: { value: 'testing' } });
     expect(passwordInputNode.value).toMatch('testing');
   });
-  test('should be able to submit form', () => {
-    const mockFn = jest.fn();
-    const { getByRole } = render(<Login handleLogin={mockFn} />);
+  test('renders empty username field error message', () => {
+    const { getByRole, container } = render(<Login />);
     const buttonNode = getByRole('button');
     fireEvent.click(buttonNode);
-    // expect(mockFn).toHaveBeenCalled();
+    expect(container.innerHTML).toMatch('Username field is empty');
+  });
+  test('renders empty password field error message', () => {
+    const { getByLabelText, getByRole, container } = render(<Login />);
+    const usernameInputNode = getByLabelText('Username:');
+    const buttonNode = getByRole('button');
+    expect(usernameInputNode.value).toMatch('');
+    fireEvent.change(usernameInputNode, { target: { value: 'testing' } });
+    expect(usernameInputNode.value).toMatch('testing');
+    fireEvent.click(buttonNode);
+    expect(container.innerHTML).toMatch('Password field is empty');
+  });
+  test('renders too long username error message', () => {
+    const { getByLabelText, getByRole, container } = render(<Login />);
+    const usernameInputNode = getByLabelText('Username:');
+    const passwordInputNode = getByLabelText('Password:');
+    const buttonNode = getByRole('button');
+    expect(usernameInputNode.value).toMatch('');
+    fireEvent.change(usernameInputNode, {
+      target: { value: 'testingtestingtestingtestingtestingtestingtesting' },
+    });
+    expect(usernameInputNode.value).toMatch('testingtestingtestingtestingtestingtestingtesting');
+    expect(passwordInputNode.value).toMatch('');
+    fireEvent.change(passwordInputNode, {
+      target: { value: 'testing' },
+    });
+    expect(passwordInputNode.value).toMatch('testing');
+    fireEvent.click(buttonNode);
+    expect(container.innerHTML).toMatch('Username should be up to 40 symbols');
+  });
+  test('renders too long password error message', () => {
+    const { getByLabelText, getByRole, container } = render(<Login />);
+    const usernameInputNode = getByLabelText('Username:');
+    const passwordInputNode = getByLabelText('Password:');
+    const buttonNode = getByRole('button');
+    expect(usernameInputNode.value).toMatch('');
+    fireEvent.change(usernameInputNode, {
+      target: { value: 'testing' },
+    });
+    expect(usernameInputNode.value).toMatch('testing');
+    expect(passwordInputNode.value).toMatch('');
+    fireEvent.change(passwordInputNode, {
+      target: { value: 'testingtestingtestingtestingtestingtestingtesting' },
+    });
+    expect(passwordInputNode.value).toMatch('testingtestingtestingtestingtestingtestingtesting');
+    fireEvent.click(buttonNode);
+    expect(container.innerHTML).toMatch('Password should be up to 40 symbols');
+  });
+  test('should not render empty username or password field error message', () => {
+    const { getByLabelText, getByRole, container } = render(<Login />);
+    const usernameInputNode = getByLabelText('Username:');
+    const passwordInputNode = getByLabelText('Password:');
+    const buttonNode = getByRole('button');
+    expect(usernameInputNode.value).toMatch('');
+    fireEvent.change(usernameInputNode, { target: { value: 'testing' } });
+    expect(usernameInputNode.value).toMatch('testing');
+    expect(passwordInputNode.value).toMatch('');
+    fireEvent.change(passwordInputNode, { target: { value: 'testing' } });
+    expect(passwordInputNode.value).toMatch('testing');
+    fireEvent.click(buttonNode);
+    expect(container.innerHTML).not.toBe('Username field is empty');
+    expect(container.innerHTML).not.toBe('Password field is empty');
   });
 });
